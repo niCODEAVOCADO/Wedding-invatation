@@ -1,0 +1,1287 @@
+/* ==========================================
+   GLOBAL
+========================================== */
+
+:root {
+    --wine: #762039;
+    --wine-light: #a94f6b;
+    --pink: #f4dbe3;
+    --paper: #fffaf7;
+
+    /* Page 5 (the plain right page after the last card) */
+    --last-page-color: #762039;
+    --last-page-text: #fffaf7; /* colour of "We are hoping to see you" */
+
+    --font-script: "Great Vibes", "Brush Script MT", cursive;
+    --font-serif: "Cormorant Garamond", Georgia, serif;
+
+    --page-bg:
+        linear-gradient(rgba(255, 240, 244, 0.15), rgba(255, 240, 244, 0.15)),
+        url("wedding-bg.png") center / cover no-repeat;
+
+    --page-width: min(49vw, 60dvh, 700px);
+    --spread-width: calc(var(--page-width) * 2);
+    --cover-width: var(--page-width);
+    --cover-half-width: calc(var(--page-width) / 2);
+    --cover-half-height: calc(var(--page-width) * 2 / 3);
+    --spread-half-height: var(--cover-half-height);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    font-family: var(--font-serif);
+    background: var(--page-bg);
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+.mail:focus-visible {
+    outline: 3px solid #c7869b;
+    outline-offset: 4px;
+}
+
+
+/* ==========================================
+   WELCOME SCREEN
+========================================== */
+
+.welcome-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(rgba(255, 250, 247, 0.45), rgba(255, 250, 247, 0.45)),
+        var(--page-bg);
+
+    opacity: 1;
+    visibility: visible;
+
+    transition:
+        opacity 0.8s ease,
+        visibility 0s linear 0.8s;
+}
+
+.welcome-screen.leaving {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.welcome-screen.gone {
+    display: none;
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 3;
+
+    width: min(650px, 90vw);
+    padding: 30px 20px;
+
+    text-align: center;
+    transform: translateY(-2vh);
+}
+
+.welcome-kicker {
+    margin: 0 0 22px;
+    color: #b58a96;
+    font-family: var(--font-serif);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.welcome-content h1 {
+    margin: 0 0 14px;
+    color: #c66e88;
+    font-family: var(--font-script);
+    font-size: clamp(80px, 11vw, 128px);
+    font-weight: normal;
+    line-height: 1.1;
+}
+
+.welcome-message {
+    margin: 15px 0 28px;
+    color: #76525d;
+    font-family: var(--font-serif);
+    font-size: clamp(26px, 3.3vw, 36px);
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.proceed-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    padding: 8px 0;
+
+    color: var(--wine-light);
+    background: transparent;
+
+    border: 0;
+    border-bottom: 1px solid #e5b8c6;
+    border-radius: 0;
+
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-style: italic;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.proceed-link:hover {
+    color: var(--wine);
+    border-color: var(--wine);
+}
+
+.link-arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.proceed-link:hover .link-arrow {
+    transform: translate(3px, -3px);
+}
+
+.welcome-signoff {
+    margin: 27px 0 0;
+    color: #b49aa2;
+    font-family: var(--font-script);
+    font-size: 32px;
+}
+
+.letter-reveal .letter {
+    display: inline-block;
+    white-space: pre;
+
+    opacity: 0;
+    transform: translateY(10px);
+
+    animation: letterAppear 0.45s ease forwards;
+    animation-delay: var(--letter-delay, 0ms);
+}
+
+@keyframes letterAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ==========================================
+   VINYL AND ALBUM COVER
+========================================== */
+
+.record-scene {
+    --rec-size: clamp(115px, 13vw, 165px);
+    --rec-left: clamp(18px, 3vw, 38px);
+    --rec-bottom: clamp(18px, 3vh, 32px);
+
+    position: fixed;
+    left: var(--rec-left);
+    top: calc(100vh - var(--rec-size) - var(--rec-bottom));
+    top: calc(100dvh - var(--rec-size) - var(--rec-bottom));
+
+    width: var(--rec-size);
+    aspect-ratio: 1;
+
+    z-index: 10000;
+    pointer-events: none;
+
+    transition:
+        top 1s ease,
+        left 1s ease,
+        width 1s ease;
+}
+
+.record-scene.docked {
+    --rec-size: 84px;
+    top: 12px;
+    left: 12px;
+}
+
+.vinyl-record {
+    position: absolute;
+    top: 24%;
+    right: 22%;
+
+    width: 74%;
+    aspect-ratio: 1;
+
+    border: 1px solid #252128;
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 0 12%,
+            rgba(255,255,255,.08) 12.5% 13%,
+            transparent 13.5% 23%,
+            rgba(255,255,255,.07) 23.5% 24%,
+            transparent 24.5% 35%,
+            rgba(255,255,255,.06) 35.5% 36%,
+            transparent 36.5% 47%,
+            rgba(255,255,255,.05) 47.5% 48%,
+            transparent 48.5% 100%
+        ),
+        conic-gradient(#302b33, #111015, #39323b, #17141a, #302b33);
+
+    box-shadow: 0 5px 15px rgba(45, 24, 34, 0.19);
+
+    animation: vinylSpin 4s linear infinite;
+    will-change: transform;
+
+    transition:
+        top 1s ease 0.2s,
+        right 1s ease 0.2s,
+        width 1s ease 0.2s;
+}
+
+.record-scene.out .vinyl-record {
+    top: 5%;
+    right: 0;
+    width: 80%;
+}
+
+.record-scene.music-paused .vinyl-record {
+    animation-play-state: paused;
+}
+
+.record-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+
+    width: 30%;
+    aspect-ratio: 1;
+
+    transform: translate(-50%, -50%);
+
+    border: 1px solid #e8b3c3;
+    border-radius: 50%;
+
+    color: #fff7f9;
+    background: radial-gradient(circle at 35% 30%, #d58ba2, #87334f);
+
+    text-align: center;
+}
+
+.record-label span {
+    font-family: var(--font-serif);
+    font-size: clamp(8px, 0.9vw, 11px);
+    font-weight: bold;
+}
+
+.record-label small {
+    font-size: clamp(4px, 0.5vw, 6px);
+    letter-spacing: 0.5px;
+}
+
+.record-label::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 17%;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #fff;
+    transform: translateX(-50%);
+}
+
+.album-cover {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    display: block;
+
+    width: 78%;
+    aspect-ratio: 1;
+
+    object-fit: cover;
+
+    border: 2px solid #fff;
+    border-radius: 2px;
+
+    background: #f6e4ea;
+    box-shadow: 0 5px 16px rgba(87, 37, 55, 0.19);
+
+    z-index: 2;
+}
+
+@keyframes vinylSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+
+/* ==========================================
+   MUSIC CONTROL
+========================================== */
+
+.music-toggle {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+
+    z-index: 10001;
+
+    padding: 10px 15px;
+
+    color: #8d3452;
+    background: rgba(255, 255, 255, 0.95);
+
+    border: 1px solid #e6bccb;
+    border-radius: 30px;
+
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    opacity: 0;
+    transform: translateY(-6px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        background 0.3s ease;
+}
+
+.music-toggle[hidden],
+.next-button[hidden],
+.prev-button[hidden] {
+    display: none !important;
+}
+
+.music-toggle.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.music-toggle:hover {
+    background: #f8e5ec;
+}
+
+
+/* ==========================================
+   ENVELOPE
+========================================== */
+
+.mail {
+    position: relative;
+
+    width: min(600px, 90vw);
+    aspect-ratio: 1.6 / 1;
+
+    cursor: pointer;
+    perspective: 1000px;
+
+    z-index: 1;
+
+    animation:
+        mailIntro 1s ease 0.2s both,
+        mailHint 2.5s ease-in-out 1.2s infinite;
+
+    filter:
+        drop-shadow(0 0 2px rgba(70, 20, 45, 0.4))
+        drop-shadow(0 12px 25px rgba(70, 20, 45, 0.25));
+}
+
+.mail.open {
+    animation: none;
+}
+
+.mail-body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--paper);
+    border: 1px solid #d7a5b4;
+    border-radius: 8px;
+    overflow: visible;
+}
+
+.inside-card {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 42%;
+    aspect-ratio: 3 / 4;
+    transform: translateX(-50%) translateY(100%);
+    transform-origin: bottom center;
+    z-index: 5;
+    opacity: 0;
+    cursor: pointer;
+    pointer-events: none;
+    clip-path: inset(0 0 100% 0);
+    transition:
+        transform 0.8s cubic-bezier(.22, 1, .36, 1),
+        opacity 0.4s ease,
+        clip-path 0.8s ease;
+}
+
+.inside-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.mail.open .inside-card {
+    transform: translateX(-50%) translateY(-22%);
+    opacity: 1;
+    pointer-events: auto;
+    clip-path: inset(0);
+    z-index: 30;
+}
+
+.mail.card-selected .inside-card {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+
+/* Envelope folds */
+
+.left-triangle,
+.right-triangle,
+.bottom-triangle,
+.top-flap {
+    position: absolute;
+    pointer-events: none;
+}
+
+.left-triangle {
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: #f4dbe3;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+    z-index: 50;
+}
+
+.right-triangle {
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: #f4dbe3;
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+    z-index: 50;
+}
+
+.bottom-triangle {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50%;
+    background: #efd0da;
+    clip-path: polygon(0 100%, 50% 0, 100% 100%);
+    z-index: 100;
+}
+
+.top-flap {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 68%;
+    background: #f8dfe6;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    backface-visibility: hidden;
+    transition: transform 0.8s cubic-bezier(.4, 0, .2, 1);
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.25));
+    z-index: 150;
+}
+
+.mail.open .top-flap {
+    transform: rotateX(180deg);
+    z-index: 20;
+}
+
+
+/* Wax seal */
+
+.wax-seal {
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%, -50%);
+    width: clamp(60px, 10vw, 85px);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: #f9e5ea;
+    background: #8f2948;
+    border: 4px solid var(--wine);
+    border-radius: 50%;
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.2),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.15);
+    z-index: 200;
+}
+
+.wax-seal span {
+    font-family: var(--font-script);
+    font-size: clamp(20px, 3.4vw, 28px);
+    font-weight: normal;
+}
+
+.wax-seal small {
+    font-size: clamp(9px, 1.5vw, 12px);
+}
+
+.mail.open .wax-seal {
+    animation: waxFall 0.8s ease-in forwards;
+}
+
+@keyframes waxFall {
+    0% { transform: translate(-50%, -50%) rotate(0deg); opacity: 1; }
+    30% { transform: translate(-50%, -20%) rotate(15deg); opacity: 1; }
+    100% { transform: translate(-30%, 180px) rotate(75deg); opacity: 0; }
+}
+
+
+/* Envelope text and entrance */
+
+.click-mail {
+    margin-top: 20px;
+    color: var(--wine);
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-style: italic;
+    letter-spacing: 1px;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.mail.open + .click-mail {
+    opacity: 0;
+    transform: translateY(-5px);
+    pointer-events: none;
+}
+
+.mail.hide {
+    opacity: 0;
+    transform: scale(0.96);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+@keyframes mailIntro {
+    from { opacity: 0; transform: translateY(25px) scale(.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes mailHint {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-5px) rotate(-.5deg); }
+}
+
+
+/* ==========================================
+   INVITATION STAGE
+========================================== */
+
+.invitation-stage {
+    position: fixed;
+    inset: 0;
+    perspective: 1800px;
+    transform-style: preserve-3d;
+    z-index: 20;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity 0.5s ease,
+        visibility 0s linear 0.5s;
+}
+
+.invitation-stage.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.5s ease, visibility 0s;
+}
+
+.booklet {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--spread-width);
+    aspect-ratio: 3 / 2;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.booklet.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+
+/* Booklet pages */
+
+.book-page {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+}
+
+.book-left-page {
+    left: 0;
+}
+
+.book-right-page {
+    right: 0;
+}
+
+.book-right-page img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+/* Page 5: plain coloured right page after the last card */
+.book-right-page.empty {
+    background: var(--last-page-color);
+}
+
+.book-spine {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    transform: translateX(-50%);
+    background: rgba(120, 65, 80, 0.2);
+    z-index: 2;
+}
+
+
+/* ==========================================
+   COVER AND PAGE FACES
+========================================== */
+
+.cover-page {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--cover-width);
+    aspect-ratio: 3 / 4;
+    transform: translate(-50%, -50%);
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    background: transparent;
+    box-shadow: 0 8px 22px rgba(60, 20, 35, 0.16);
+    z-index: 30;
+    will-change: transform;
+    transition:
+        width 0.7s ease,
+        transform 0.7s ease,
+        box-shadow 0.7s ease;
+}
+
+.cover-page.move-to-right {
+    width: var(--page-width);
+    transform: translate(0, -50%);
+}
+
+.cover-page.turning {
+    width: var(--page-width);
+    transform: translate(0, -50%) rotateY(-180deg);
+    box-shadow: 0 5px 18px rgba(60, 20, 35, 0.13);
+    transition:
+        transform 1.5s cubic-bezier(.65, 0, .35, 1),
+        box-shadow 1.5s ease;
+}
+
+.cover-page.returning {
+    transition:
+        transform 1.5s cubic-bezier(.65, 0, .35, 1),
+        box-shadow 1.5s ease;
+}
+
+.cover-page.finished {
+    z-index: 12;
+}
+
+.page-face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--paper);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.page-face img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.page-front {
+    transform: rotateY(0deg);
+}
+
+.page-back {
+    transform: rotateY(180deg);
+}
+
+
+/* Physical sheets used for later desktop page turns */
+
+.turning-sheet {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--page-width);
+    aspect-ratio: 3 / 4;
+    transform: translate(0, -50%);
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    z-index: 31;
+    background: transparent;
+    box-shadow: 0 5px 18px rgba(60, 20, 35, 0.13);
+    will-change: transform;
+    transition:
+        transform 1.5s cubic-bezier(.65, 0, .35, 1),
+        box-shadow 1.5s ease;
+}
+
+.turning-sheet.turning {
+    transform: translate(0, -50%) rotateY(-180deg);
+    box-shadow: 0 4px 12px rgba(60, 20, 35, 0.1);
+}
+
+.turning-sheet.finished {
+    box-shadow: none;
+}
+
+
+/* ==========================================
+   INVITATION DECORATIVE TEXT
+========================================== */
+
+.invite-text {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    font-family: var(--font-serif);
+    color: var(--wine);
+    transition: opacity 0.35s ease;
+}
+
+.invitation-stage.booklet-active .invite-text {
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+/* Desktop text */
+
+@media (min-width: 768px) {
+    .invite-text span {
+        position: absolute;
+        font-size: clamp(34px, 4.2vw, 58px);
+        font-weight: normal;
+        letter-spacing: 4px;
+        white-space: nowrap;
+        opacity: 0;
+        transition:
+            opacity 0.6s ease,
+            transform 0.6s ease;
+    }
+
+    .invite-text span:nth-child(1) {
+        right: calc(50% + var(--cover-half-width) + 20px);
+        top: calc(50% - 48px);
+        transform: translateX(-25px);
+    }
+
+    .invite-text span:nth-child(2) {
+        right: calc(50% + var(--cover-half-width) + 20px);
+        top: calc(50% + 10px);
+        transform: translateX(-25px);
+    }
+
+    .invite-text span:nth-child(3) {
+        left: calc(50% + var(--cover-half-width) + 20px);
+        top: calc(50% - 15px);
+        transform: translateX(25px);
+    }
+
+    .invitation-stage.show:not(.booklet-active) .invite-text span {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .invitation-stage.show:not(.booklet-active) .invite-text span:nth-child(1) { transition-delay: 0.15s; }
+    .invitation-stage.show:not(.booklet-active) .invite-text span:nth-child(2) { transition-delay: 0.45s; }
+    .invitation-stage.show:not(.booklet-active) .invite-text span:nth-child(3) { transition-delay: 0.75s; }
+}
+
+
+/* ==========================================
+   NEXT / PREVIOUS BUTTONS
+========================================== */
+
+.next-button,
+.prev-button {
+    position: fixed;
+    z-index: 60;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 21px;
+    border-radius: 999px;
+    font-family: var(--font-serif);
+    font-size: clamp(15px, 1.6vw, 18px);
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.next-button {
+    left: calc(50% + var(--cover-half-width));
+    top: calc(50% + var(--cover-half-height) + 12px);
+    color: #fff8fa;
+    background: var(--wine);
+    border: 1px solid #a75b72;
+    transform: translate(-100%, 10px);
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease,
+        background 0.3s ease,
+        visibility 0s linear 0.5s;
+}
+
+.next-button.show:not([hidden]) {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-100%, 0);
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease,
+        background 0.3s ease,
+        visibility 0s;
+}
+
+.next-button:hover { background: #963451; }
+.next-button:disabled { cursor: default; opacity: 0.65; pointer-events: none; }
+
+.prev-button {
+    left: calc(50% - var(--page-width));
+    top: calc(50% + var(--spread-half-height) + 12px);
+    color: var(--wine);
+    background: rgba(255, 250, 247, 0.95);
+    border: 1px solid #a75b72;
+    transform: translateY(10px);
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease,
+        background 0.3s ease,
+        visibility 0s linear 0.5s;
+}
+
+.prev-button.show:not([hidden]) {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease,
+        background 0.3s ease,
+        visibility 0s;
+}
+
+.prev-button:hover { background: #f8e5ec; }
+
+@media (min-width: 768px) {
+    .invitation-stage.booklet-active ~ .next-button {
+        left: calc(50% + var(--page-width));
+        top: calc(50% + var(--spread-half-height) + 12px);
+    }
+}
+
+
+/* ==========================================
+   FINALE (card re-centers, closing message)
+========================================== */
+
+.finale {
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--page-bg);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 0.9s ease,
+        visibility 0s linear 0.9s;
+}
+
+.finale.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transition:
+        opacity 0.9s ease,
+        visibility 0s;
+}
+
+.end-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: var(--cover-width);
+    aspect-ratio: 3 / 4;
+
+    background: var(--last-page-color);
+    box-shadow: 0 8px 22px rgba(60, 20, 35, 0.16);
+
+    transform: scale(0.94);
+    transition: transform 1.2s cubic-bezier(.22, 1, .36, 1);
+}
+
+.finale.show .end-card {
+    transform: scale(1);
+}
+
+/* 5.png fills the card */
+.end-image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+/* "We are hoping to see you", centered over the picture */
+.end-text,
+.page-message {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0 8%;
+
+    color: var(--last-page-text);
+    font-family: var(--font-serif);
+    font-size: calc(var(--page-width) * 0.085);
+    letter-spacing: 0.12em;
+    line-height: 1.5;
+    text-align: center;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+
+    pointer-events: none;
+}
+
+/* On the finale card the message fades in after "YOU ARE INVITED!" */
+.end-text {
+    font-size: calc(var(--cover-width) * 0.085);
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+        opacity 1.4s ease,
+        transform 1.4s ease;
+}
+
+.finale.show-text .end-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* On the open book it shows only on the last right-hand page */
+.page-message {
+    display: none;
+}
+
+.book-right-page.has-message .page-message {
+    display: flex;
+}
+
+/* "YOU ARE INVITED!" reuses the .invite-text layout; it fades in, then out */
+.finale.show-words .invite-text span {
+    opacity: 1;
+    transform: none;
+}
+
+.finale.show-words .invite-text span:nth-child(1) { transition-delay: 0.15s; }
+.finale.show-words .invite-text span:nth-child(2) { transition-delay: 0.45s; }
+.finale.show-words .invite-text span:nth-child(3) { transition-delay: 0.75s; }
+
+@media (min-width: 768px) {
+    /* Previous button sits under the single centered card */
+    .finale.show ~ .prev-button {
+        left: calc(50% - var(--cover-half-width));
+        top: calc(50% + var(--cover-half-height) + 12px);
+    }
+}
+
+
+/* ==========================================
+   MOBILE LAYOUT
+========================================== */
+
+@media (max-width: 767px) {
+    :root {
+        --cover-width: min(92vw, 50dvh, 760px);
+        --cover-half-width: min(46vw, 25dvh, 380px);
+        --cover-half-height: min(61.3333vw, 33.3333dvh, 506.67px);
+    }
+
+    .welcome-content {
+        width: 94vw;
+        padding: 20px 12px 125px;
+        transform: translateY(-18px);
+    }
+
+    .welcome-kicker {
+        margin-bottom: 19px;
+        font-size: 11px;
+        letter-spacing: 2.5px;
+    }
+
+    .welcome-content h1 {
+        font-size: clamp(72px, 19vw, 100px);
+    }
+
+    .welcome-message {
+        margin: 14px 0 24px;
+        font-size: clamp(24px, 6.5vw, 30px);
+    }
+
+    .proceed-link { font-size: 20px; }
+    .welcome-signoff { margin-top: 22px; font-size: 28px; }
+
+    .record-scene {
+        --rec-size: clamp(105px, 29vw, 140px);
+        --rec-left: 12px;
+        --rec-bottom: 12px;
+    }
+
+    .music-toggle {
+        top: 12px;
+        right: 12px;
+        font-size: 14px;
+    }
+
+    .booklet,
+    .booklet.show {
+        display: none !important;
+    }
+
+    .invite-text {
+        inset: auto;
+        left: 50%;
+        top: 50%;
+        width: 100%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        transition: top 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .invitation-stage.text-moved-up .invite-text {
+        top: calc(50% - var(--cover-half-height) - 5px);
+        transform: translate(-50%, -100%);
+    }
+
+    .invite-text span {
+        display: block;
+        position: static;
+        margin: 0;
+        font-size: clamp(30px, 8.5vw, 44px);
+        line-height: 1.05;
+        letter-spacing: 4px;
+        white-space: nowrap;
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .invitation-stage.show:not(.booklet-active) .invite-text span {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .invitation-stage.show:not(.booklet-active) .invite-text span:nth-child(1) { transition-delay: 0.1s; }
+    .invitation-stage.show:not(.booklet-active) .invite-text span:nth-child(2) { transition-delay: 0.4s; }
+    .invitation-stage.show:not(.booklet-active) .invite-text span:nth-child(3) { transition-delay: 0.7s; }
+
+    /* Card reveals after text moves up */
+    .cover-page {
+        left: 50%;
+        top: 50%;
+        width: var(--cover-width);
+        aspect-ratio: 3 / 4;
+        transform: translate(-50%, -50%) scale(0.85);
+        transform-origin: center center;
+        opacity: 0;
+        transition: transform 1s cubic-bezier(.65, 0, .35, 1), opacity 0.8s ease;
+    }
+
+    .invitation-stage.card-revealed .cover-page {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .invitation-stage.card-revealed .cover-page.mobile-flipped,
+    .cover-page.mobile-flipped {
+        transform: translate(-50%, -50%) rotateY(180deg) scale(1);
+    }
+
+    .cover-page.finished {
+        z-index: 30;
+    }
+
+    /* Finale: words sit above the centered card */
+    .finale .invite-text {
+        top: calc(50% - var(--cover-half-height) - 5px);
+        transform: translate(-50%, -100%);
+    }
+
+    .next-button {
+        left: calc(50% + var(--cover-half-width));
+        top: calc(50% + var(--cover-half-height) + 12px);
+        padding: 11px 17px;
+        font-size: 15px;
+    }
+
+    .prev-button {
+        left: calc(50% - var(--cover-half-width));
+        top: calc(50% + var(--cover-half-height) + 12px);
+        padding: 11px 17px;
+        font-size: 15px;
+    }
+}
+
+
+/* Smaller or shorter screens */
+
+@media (max-width: 380px), (max-height: 620px) {
+    .record-scene {
+        --rec-size: 100px;
+        --rec-left: 9px;
+        --rec-bottom: 9px;
+    }
+
+    .welcome-content {
+        padding-bottom: 105px;
+        transform: translateY(-10px);
+    }
+
+    .welcome-kicker { letter-spacing: 1.8px; }
+    .welcome-signoff { margin-top: 17px; }
+}
+
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .letter-reveal .letter {
+        opacity: 1;
+        transform: none;
+        animation: none;
+    }
+    .vinyl-record { animation-duration: 12s; }
+    .welcome-screen, .record-scene, .vinyl-record, .mail, .mail *,
+    .invitation-stage, .cover-page, .turning-sheet, .booklet,
+    .invite-text, .invite-text span, .next-button, .prev-button, .music-toggle,
+    .finale, .end-card, .end-text {
+        transition-duration: 0.01ms !important;
+    }
+}

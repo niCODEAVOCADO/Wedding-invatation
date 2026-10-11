@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#ffffff">
+    <title>Geraldo &amp; RoseMarie Wen — Wedding Invitation</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="wenat.css">
+</head>
+
+<body>
+
+    <section class="welcome-screen" id="welcomeScreen" aria-label="Welcome">
+        <div class="welcome-content">
+            <p class="welcome-kicker letter-reveal">A little something, just for you</p>
+            <h1 class="letter-reveal">Greetings!</h1>
+            <p class="welcome-message letter-reveal"> We have a mail for you.</p>
+
+            <button class="proceed-link" id="proceedButton" type="button">
+                <span class="letter-reveal">Open your letter</span>
+                <span class="link-arrow" aria-hidden="true">↗</span>
+            </button>
+
+            <p class="welcome-signoff letter-reveal">with love,</p>
+            <p class="welcome-signoff letter-reveal">Geraldo &amp; RoseMarie Wen</p>
+        </div>
+    </section>
+
+    <div class="record-scene music-paused" id="recordScene" aria-hidden="true">
+        <div class="vinyl-record">
+            <div class="record-label">
+                <span>G &amp; R</span>
+                <small>PASILYO</small>
+            </div>
+        </div>
+        <img class="album-cover" src="album cover/albumCover.jpg" alt="">
+    </div>
+
+    <!-- The real file path is set in wenat.js (AUDIO_SRC) -->
+    <audio id="welcomeAudio" preload="auto" loop></audio>
+
+    <button class="music-toggle"
+            id="musicToggle"
+            type="button"
+            aria-label="Play music"
+            aria-pressed="false"
+            hidden>
+        ♫ Play music
+    </button>
+
+    <div class="mail" id="mail"
+         role="button"
+         tabindex="0"
+         aria-label="Open the wedding invitation envelope"
+         aria-expanded="false">
+
+        <div class="mail-body">
+            <div class="inside-card" id="insideCard">
+                <img id="peekingImage" src="cards/1.png" alt="Wedding invitation cover">
+            </div>
+        </div>
+
+        <div class="top-flap"></div>
+        <div class="wax-seal" aria-hidden="true">
+            <span>G</span>
+            <small>&amp;</small>
+            <span>R</span>
+        </div>
+        <div class="left-triangle"></div>
+        <div class="right-triangle"></div>
+        <div class="bottom-triangle"></div>
+    </div>
+
+    <div class="click-mail" id="clickMail">
+        Click the mail
+    </div>
+
+    <main class="invitation-stage" id="invitationStage">
+
+        <div class="booklet" id="booklet">
+            <div class="book-page book-left-page"></div>
+            <div class="book-page book-right-page">
+                <img id="rightPageImage" src="cards/3.png" alt="Wedding invitation page 3">
+                <p class="page-message"><span>WE ARE<br>HOPING<br>TO SEE YOU</span></p>
+            </div>
+            <div class="book-spine"></div>
+        </div>
+
+        <div class="cover-page" id="coverPage">
+            <div class="page-face page-front">
+                <img id="coverFrontImage" src="cards/1.png" alt="Wedding invitation cover, page 1">
+            </div>
+            <div class="page-face page-back">
+                <img id="coverBackImage" src="cards/2.png" alt="Inside wedding invitation, page 2">
+            </div>
+        </div>
+
+        <div class="invite-text" id="inviteText" aria-hidden="true">
+            <span>YOU</span>
+            <span>ARE</span>
+            <span>INVITED!</span>
+        </div>
+    </main>
+
+    <!-- Closing scene: card re-centers and shows the final message -->
+    <section class="finale" id="finale" aria-hidden="true">
+        <div class="invite-text" aria-hidden="true">
+            <span>YOU</span>
+            <span>ARE</span>
+            <span>INVITED!</span>
+        </div>
+        <div class="end-card" id="endCard">
+            <img class="end-image" id="endImage" src="cards/5.png" alt="">
+            <p class="end-text"><span>WE ARE<br>HOPING<br>TO SEE YOU</span></p>
+        </div>
+    </section>
+
+    <button class="prev-button" id="prevButton" type="button" hidden>
+        <span aria-hidden="true">←</span> Previous
+    </button>
+
+    <button class="next-button" id="nextButton" type="button" hidden>
+        Next <span aria-hidden="true">→</span>
+    </button>
+
+    <script src="wenat.js"></script>
+</body>
+</html>
