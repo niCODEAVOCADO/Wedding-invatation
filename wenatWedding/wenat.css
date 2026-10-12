@@ -1083,12 +1083,18 @@ button:focus-visible,
     transform: translateY(0);
 }
 
-/* On the open book it shows only on the last right-hand page */
+/* Hidden by default; shown only on the last page */
 .page-message {
     display: none;
 }
 
+/* Desktop book: last right-hand page */
 .book-right-page.has-message .page-message {
+    display: flex;
+}
+
+/* Phone card (and any page face): when it holds the last image */
+.page-face.has-message .page-message {
     display: flex;
 }
 
@@ -1224,6 +1230,11 @@ button:focus-visible,
 
     .cover-page.finished {
         z-index: 30;
+    }
+
+    /* Message on the phone card scales with the card, not the desktop page */
+    .page-message {
+        font-size: calc(var(--cover-width) * 0.085);
     }
 
     /* Finale: words sit above the centered card */
