@@ -112,6 +112,21 @@ pageImages.forEach((src) => {
 
 
 // =====================================================
+// COVER FACE HELPER (phone)
+// Sets a cover face image and shows "We are hoping to see you"
+// only when that face holds the last page image
+// =====================================================
+
+function setCoverFace(imgEl, src) {
+    imgEl.src = src;
+    imgEl.parentElement.classList.toggle(
+        "has-message",
+        src === pageImages[pageImages.length - 1]
+    );
+}
+
+
+// =====================================================
 // AUDIO SETUP
 // =====================================================
 
@@ -434,11 +449,11 @@ function turnMobilePage(direction = 1) {
     invitationStage.classList.add("mobile-card-active");
 
     if (direction === 1) {
-        coverBackImage.src = pageImages[nextIndex];
+        setCoverFace(coverBackImage, pageImages[nextIndex]);
         coverPage.classList.add("mobile-flipped");
     } else {
-        coverFrontImage.src = pageImages[nextIndex];
-        coverBackImage.src = pageImages[mobilePageIndex];
+        setCoverFace(coverFrontImage, pageImages[nextIndex]);
+        setCoverFace(coverBackImage, pageImages[mobilePageIndex]);
 
         coverPage.style.transition = "none";
         coverPage.classList.add("mobile-flipped");
@@ -451,14 +466,16 @@ function turnMobilePage(direction = 1) {
     setTimeout(() => {
         mobilePageIndex = nextIndex;
 
-        coverFrontImage.src = pageImages[mobilePageIndex];
+        setCoverFace(coverFrontImage, pageImages[mobilePageIndex]);
 
         coverPage.style.transition = "none";
         coverPage.classList.remove("mobile-flipped");
         void coverPage.offsetWidth;
 
-        coverBackImage.src =
-            pageImages[Math.min(mobilePageIndex + 1, pageImages.length - 1)];
+        setCoverFace(
+            coverBackImage,
+            pageImages[Math.min(mobilePageIndex + 1, pageImages.length - 1)]
+        );
 
         coverPage.style.transition = "";
 
